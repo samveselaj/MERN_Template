@@ -1,0 +1,20 @@
+.footer-container {
+    min-width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.light {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+    background-color: var(--dark-color);
+    color: var(--white-color);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}

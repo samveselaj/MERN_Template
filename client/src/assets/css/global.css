@@ -1,0 +1,29 @@
+@import url("./navbar.css");
+@import url("./footer.css");
+@import url("./auth.css");
+@import url("./about.css");
+
+:root {
+  --white-color: #fff;
+  --dark-color: #333;
+  --error-color: #d34;
+  --green-color: #2a4;
+  --blue-color: #06f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.navbar-padding {
+  padding: 80px 0;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

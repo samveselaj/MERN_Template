@@ -1,0 +1,247 @@
+.auth-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+#light .auth-container {
+    background-color: var(--white-color);
+}
+
+#dark .auth-container {
+    background-color: var(--dark-color);
+}
+
+.width-container {
+    max-width: 440px;
+    width: 95%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 20px;
+}
+
+.auth-form-container {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 20px;
+    width: 100%;
+    min-height: 350px;
+    padding: 20px 20px 20px 20px;
+    border-radius: 10px;
+}
+
+#light .auth-form-container {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--white-color);
+    color: var(--dark-color);
+}
+
+#dark .auth-form-container {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    background-color: var(--dark-color);
+    color: var(--white-color);
+}
+
+.auth-form-container form {
+    width: 100%;
+    padding: 0;
+}
+
+.auth-form-title {
+    text-align: start;
+    font-size: 24px;
+    padding-bottom: 14px;
+    white-space: nowrap;
+}
+
+#light .auth-form-title,
+#light .auth-form-group label {
+    color: var(--dark-color);
+}
+
+#dark .auth-form-title,
+#dark .auth-form-group label {
+    color: var(--white-color);
+}
+
+.response-message {
+    text-align: start;
+    font-size: 16px;
+    padding-bottom: 14px;
+    white-space: nowrap;
+    color: var(--error-color);
+}
+
+.auth-form-group {
+    text-align: start;
+    padding-bottom: 14px;
+}
+
+.form-line-text {
+    text-align: start;
+}
+
+.auth-form-group label {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.auth-form-group input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height: 36px !important;
+    margin: 6px auto;
+    font-size: 16px;
+    padding: 10px;
+}
+
+#light .auth-form-group input {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+}
+
+#dark .auth-form-group input {
+    background-color: var(--dark-color);
+    color: var(--white-color);
+}
+
+.form-line-text>* {
+    white-space: nowrap;
+}
+
+.remember-me-container>* {
+    margin: 0 2px;
+    white-space: nowrap;
+}
+
+form .submit-auth-form {
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    height: 36px !important;
+    border-radius: 10px;
+    color: var(--white-color);
+    border: none;
+    background-color: var(--blue-color);
+    margin-bottom: 14px;
+}
+
+.icon-login-button {
+    cursor: pointer;
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    margin: 0 12px;
+    border-radius: 50%;
+    border: none;
+    color: var(--blue-color);
+    background-color: #adf;
+}
+
+#light a {
+    color: initial;
+}
+
+#dark a {
+    color: #ccc;
+}
+
+.auth-form-error-message {
+    width: 100%;
+    font-size: clamp(12px, 3vw, 16px);
+    color: var(--error-color);
+}
+
+.otp-info-message {
+    width: 100%;
+    font-size: clamp(12px, 3vw, 16px);
+}
+
+#light .otp-info-message {
+    color: var(--dark-color);
+}
+
+#dark .otp-info-message {
+    color: var(--white-color);
+}
+
+.otp-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.otp-container input {
+    text-align: center;
+    width: 36px !important;
+    height: 36px !important;
+    outline: none;
+    border-radius: 10px;
+    background: transparent;
+    margin: 5px;
+    font-size: 16px;
+    padding: 10px;
+}
+
+#light .otp-container input {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+    border: 1px solid #333;
+}
+
+#dark .otp-container input {
+    background-color: var(--dark-color);
+    color: var(--white-color);
+    border: 1px solid #fff;
+}
+
+.otp-submit-btn-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.otp-submit-btn-container button {
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    height: 36px !important;
+    border-radius: 10px;
+    color: var(--white-color);
+    border: none;
+    background-color: var(--green-color);
+    margin-bottom: 14px;
+}
+
+.auth-form-container .otp-resend-btn {
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 16px;
+    height: 36px !important;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    margin-bottom: 14px;
+}
+
+#light .auth-form-container .otp-resend-btn {
+    color: initial;
+}
+
+#dark .auth-form-container .otp-resend-btn {
+    color: #ccc;
+}
