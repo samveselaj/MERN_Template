@@ -1,7 +1,6 @@
 import React, {
     useState,
-    useRef,
-    useEffect
+    useRef
 } from 'react';
 import {
     faCircleExclamation,

@@ -64,6 +64,14 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
+router.get('/logout', (req, res) => {
+    req.logOut();
+    return res.send({
+        "login": "false",
+        "message": "Logout successful"
+    });
+});
+
 // router.get('/logout', function (req, res, next) {
 //     req.logOut(function (error) {
 //         if (error) return next(error);

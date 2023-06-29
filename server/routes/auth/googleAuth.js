@@ -2,23 +2,47 @@ require("dotenv").config();
 const router = require("express").Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const imoDomain = process.env.ORIGIN_DOMAIN;
 const { replaceSpecialChars } = require("../../utils/replaceSpecialChars");
 const GoogleUserModel = require("../../models/GoogleUserModel");
 
+const googleRefreshTokens = [];
+
 router.get("/login/success", (req, res) => {
-    const generateToken = (id) => {
-        return jwt.sign({ id }, process.env.GOOGLE_TOKEN_SECRET, {
-            expiresIn: "12h",
+    const generateGoogleAccessToken = (id) => {
+        return jwt.sign({ id }, process.env.TOKEN_SECRET, {
+            expiresIn: "15m",
         });
     };
+    const generateGoogleRefreshToken = (id) => {
+        return jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET);
+    };
     if (req.user && req.user.provider && req.user.provider === "google") {
-        const token = generateToken(req.user.id);
-        return res.status(200).json({
-            success: true,
-            message: "successfull",
-            user: req.user,
-            token: `Bearer ${replaceSpecialChars(token)}`,
+        const googleAccessToken = generateGoogleAccessToken(req.user);
+        const googleRefreshToken = generateGoogleRefreshToken(req.user);
+        googleRefreshTokens.push(googleRefreshToken);
+        jwt.verify(googleAccessToken, process.env.TOKEN_SECRET, async (err, decoded) => {
+            const decodedUser = decoded.id._json;
+            if (err) return res.sendStatus(401);
+            else {
+                const findUser = await GoogleUserModel.findOne({ googleId: decodedUser.sub });
+                if (!findUser) {
+                    const decodedUser = decodedUser
+                    const newUser = new GoogleUserModel({
+                        googleId: decodedUser.sub,
+                        usernmae: decodedUser.name,
+                        email: decodedUser.email,
+                        picture: decodedUser.picture
+                    });
+                    await newUser.save();
+                }
+                return res.json({
+                    "login": "true",
+                    "message": "Login successful",
+                    "accessToken": `Google ${replaceSpecialChars(googleAccessToken)}`,
+                    "refreshToken": `Google ${replaceSpecialChars(googleRefreshToken)}`,
+                    "user": decodedUser
+                });
+            }
         });
     } else {
         return res.sendStatus(401);
@@ -26,21 +50,30 @@ router.get("/login/success", (req, res) => {
 });
 
 router.get("/login/failed", (req, res) => {
-    res.status(401).json({
+    return res.status(401).json({
         success: false,
         message: "failure",
     });
 });
 
-router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+router.get("/google",
+    passport.authenticate("google",
+        {
+            scope: ["profile", "email"]
+        }
+    )
+);
 
-router.get('/google/callback', passport.authenticate('google'), (req, res) => {
-    return res.json({ message: 'Successfully authenticated with Google!' });
-});
+router.get("/google/callback",
+    passport.authenticate("google", {
+        successRedirect: process.env.ORIGIN_DOMAIN,
+        failureRedirect: "/login/failed",
+    })
+);
 
-router.get("/logout", (req, res) => {
+router.get("/google/logout", (req, res) => {
     req.logout();
-    res.redirect(imoDomain);
+    res.redirect(process.env.ORIGIN_DOMAIN);
 });
 
 module.exports = router;

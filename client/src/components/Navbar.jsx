@@ -17,8 +17,8 @@ function Navbar() {
   const {
     theme,
     setTheme,
-    user,
-    setLoading
+    setLoading,
+    loggedIn
   } = useContext(MyContext);
 
   const toggleTheme = () => setTheme(curr => (curr === "light" ? "dark" : "light"));
@@ -88,24 +88,31 @@ function Navbar() {
   }, [])
 
   const logout = async () => {
-    setLoading(true);
-    const url = `${process.env.REACT_APP_API_URL}/auth/logout`;
-    const response = await fetch(url);
-    const responseText = await response.text();
-    let responseData;
     try {
-      responseData = JSON.parse(responseText);
+      setLoading(true);
+      window.open(`${process.env.REACT_APP_API_URL}/auth/google/logout`, "_self");
+      const url = `${process.env.REACT_APP_API_URL}/auth/logout`;
+      const response = await fetch(url);
+      const responseText = await response.text();
+      let responseData;
+      try {
+        responseData = JSON.parse(responseText);
+      } catch (err) {
+        responseData = null;
+      }
+      if (responseData && responseData.login && responseData.login === "false") {
+        alert(responseData);
+        setLoading(false);
+        navigate("/login");
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
+        window.sessionStorage.clear();
+        window.location.reload();
+      } else {
+        setLoading(false);
+        alert("Logout failed");
+      }
     } catch (err) {
-      responseData = null;
-    }
-    if (responseData && responseData.login && responseData.login === "false") {
-      setLoading(false);
-      navigate("/login");
-      Cookies.remove("accessToken");
-      Cookies.remove("refreshToken");
-      window.sessionStorage.clear();
-      window.location.reload();
-    } else {
       setLoading(false);
       alert("Logout failed");
     }
@@ -134,7 +141,7 @@ function Navbar() {
             </div>
           )}
         </div>
-        {!user ? (
+        {!loggedIn ? (
           <>
             <Link to="/login" className="navbar-link">Login</Link>
             <Link to="/Signup" className="navbar-link">Signup</Link>
@@ -158,7 +165,7 @@ function Navbar() {
               <p>About</p>
               <FontAwesomeIcon icon={faInfoCircle} />
             </Link>
-            {!user ? (
+            {!loggedIn ? (
               <>
                 <Link to="/login" className="navbar-dropdown-item">
                   <p>Login</p>

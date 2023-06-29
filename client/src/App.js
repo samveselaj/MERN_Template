@@ -98,7 +98,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    async function checkToken() {
+    async function fetchRegularUser() {
       setLoading(true);
       const accessToken = Cookies.get("accessToken");
       const refreshToken = Cookies.get("refreshToken");
@@ -125,11 +125,42 @@ function App() {
         window.sessionStorage.clear();
         return;
       } else {
+        console.log(responseData);
         window.sessionStorage.setItem("user", JSON.stringify(responseData.user));
         setLoggedIn(true);
       }
     }
-    checkToken();
+    fetchRegularUser();
+  }, []);
+
+  useEffect(() => {
+    async function fetchGoogleUser() {
+      setLoading(true);
+      const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
+      const googleResponse = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      });
+      let googleResponseData;
+      const googleResponseText = await googleResponse.text();
+      try {
+        googleResponseData = JSON.parse(googleResponseText);
+      } catch (err) {
+        googleResponseData = null;
+      } finally {
+        setLoading(false);
+      }
+      if (googleResponseData) {
+        setLoggedIn(true);
+        console.log(googleResponseData);
+      }
+    }
+    fetchGoogleUser();
   }, []);
 
   const userFromSessionStorage = window.sessionStorage.getItem("user");

@@ -5,11 +5,11 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const session = require("express-session");
+const cookieSession = require("cookie-session");
 const passport = require("./config/passportConfig");
 const loginRoute = require("./routes/auth/login");
 const signupRoute = require("./routes/auth/signup");
-const logoutRoute = require("./routes/auth/logOut");
-const tokenRoute = require("./routes/auth/token");
+const verifyTokenRoute = require("./routes/auth/verifyToken");
 const googleAuthRoute = require("./routes/auth/googleAuth");
 const verifyOTPRoute = require("./routes/auth/verifyOTP");
 const resendOTPRoute = require("./routes/auth/resendOTP");
@@ -19,6 +19,15 @@ mongooseConnectDb();
 deleteNotVerified();
 
 const port = process.env.PORT || 8080;
+
+app.use(cookieSession({
+    name: "session",
+    keys: [process.env.COOKIE_KEY],
+    maxAge: 12 * 60 * 60 * 1000
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(cors({
     origin: `${process.env.ORIGIN_DOMAIN}`,
@@ -33,19 +42,9 @@ app.use(bodyParser.urlencoded({
     parameterLimit: 1000000
 }));
 
-app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: false
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use("/auth", signupRoute);
 app.use("/auth", loginRoute);
-app.use("/auth", logoutRoute);
-app.use("/auth", tokenRoute);
+app.use("/auth", verifyTokenRoute);
 app.use("/auth", googleAuthRoute);
 app.use("/auth", verifyOTPRoute);
 app.use("/auth", resendOTPRoute);

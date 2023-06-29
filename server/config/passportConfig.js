@@ -1,3 +1,4 @@
+require("dotenv").config();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
@@ -29,40 +30,43 @@ passport.use(new GoogleStrategy({
     clientSecret: googleClientSecret,
     callbackURL: `${mainNodeJsDomainApi}/auth/google/callback`,
 },
-    async function (accessToken, refreshToken, profile, done) {
-        try {
-            const findUserInDB = await UserModel.findOne({ googleId: profile.id });
-            if (findUserInDB) return done(null, findUserInDB);
-            else if (!findUserInDB) {
-                const newUser = new UserModel({
-                    googleId: profile.id,
-                    email: profile.email,
-                    username: profile.email,
-                    password: profile.id,
-                });
-                const savedUser = await newUser.save();
-                if (savedUser) return done(null, savedUser);
-            } else return done(null, false);
-        } catch (err) {
-            return done(null, false);
-        }
+    function (accessToken, refreshToken, profile, done) {
+        done(null, profile);
     }
 ));
 
-passport.serializeUser(function (user, done) {
-    if (user.googleId) done(null, user.googleId);
-    else done(null, user.id);
+// passport.serializeUser(function (user, done) {
+//     if (user.googleId) done(null, user.googleId);
+//     else done(null, user.id);
+// });
+
+// passport.deserializeUser(async function (id, done) {
+//     console.log(id);
+//     try {
+//         const user = await UserModel.findOne({ _id: id });
+//         if (user) return done(null, user);
+//         else return done(null, false);
+//     } catch (err) {
+//         return res.sendStatus(400);
+//     }
+// });
+
+passport.serializeUser((user, done) => {
+    if (user.sub) {
+        return done(null, user);
+    } else {
+        done(null, user.id);
+    }
 });
 
-passport.deserializeUser(async function (id, done) {
-    try {
-        const user = await UserModel.findOne({ _id: id });
-        const googleUser = await UserModel.findOne({ googleId: id });
-        if (user) return done(null, user);
-        else if (googleUser) return done(null, googleUser);
+passport.deserializeUser(async function (user, done) {
+    if (user.sub) {
+        return done(null, user);
+    } else {
+        const foundUser = UserModel.findOne({ _id: id });
+        if (foundUser) return done(err, foundUser);
         else return done(null, false);
-    } catch (err) {
-        return res.sendStatus(400);
+
     }
 });
 
