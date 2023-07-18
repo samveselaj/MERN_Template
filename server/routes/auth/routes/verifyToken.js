@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const UserModel = require("../../models/UserModel");
-const { replaceSpecialChars } = require("../../utils/replaceSpecialChars");
+const UserModel = require("../../../models/UserModel");
+const { replaceSpecialChars } = require("../../../utils/replaceSpecialChars");
 
 const router = express.Router();
 

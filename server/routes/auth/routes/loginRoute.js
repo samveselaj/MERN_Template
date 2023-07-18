@@ -1,8 +1,8 @@
 const express = require("express");
-const passport = require("../../config/passportConfig");
-const UserModel = require("../../models/UserModel");
+const passport = require("../../../config/passportConfig");
+const UserModel = require("../../../models/UserModel");
 const jwt = require("jsonwebtoken");
-const { replaceSpecialChars } = require("../../utils/replaceSpecialChars");
+const { replaceSpecialChars } = require("../../../utils/replaceSpecialChars");
 
 const router = express.Router();
 

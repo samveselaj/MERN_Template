@@ -7,12 +7,7 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieSession = require("cookie-session");
 const passport = require("./config/passportConfig");
-const loginRoute = require("./routes/auth/login");
-const signupRoute = require("./routes/auth/signup");
-const verifyTokenRoute = require("./routes/auth/verifyToken");
-const googleAuthRoute = require("./routes/auth/googleAuth");
-const verifyOTPRoute = require("./routes/auth/verifyOTP");
-const resendOTPRoute = require("./routes/auth/resendOTP");
+const authRoutes = require("./routes/auth/index");
 const { deleteNotVerified } = require("./utils/deleteNotVerified");
 
 mongooseConnectDb();
@@ -42,12 +37,13 @@ app.use(bodyParser.urlencoded({
     parameterLimit: 1000000
 }));
 
-app.use("/auth", signupRoute);
-app.use("/auth", loginRoute);
-app.use("/auth", verifyTokenRoute);
-app.use("/auth", googleAuthRoute);
-app.use("/auth", verifyOTPRoute);
-app.use("/auth", resendOTPRoute);
+app.use("/auth", authRoutes);
+// app.use("/auth", signupRoute);
+// app.use("/auth", loginRoute);
+// app.use("/auth", verifyTokenRoute);
+// app.use("/auth", googleAuthRoute);
+// app.use("/auth", verifyOTPRoute);
+// app.use("/auth", resendOTPRoute);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));

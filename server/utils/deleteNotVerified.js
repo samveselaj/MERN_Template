@@ -9,7 +9,7 @@ async function deleteNotVerified() {
         const user = users[i];
         for (let j = 0; j < userOtps.length; j++) {
             const userOtp = userOtps[j];
-            if ((userOtp.username === user.username && userOtp.expireAt < Date.now()) || (!"verified" in user)) {
+            if ((userOtp.username === user.username && userOtp.expireAt < Date.now()) && (!"verified" in user)) {
                 await UserModel.deleteOne({ _id: user._id });
             }
             if (userOtp.expireAt < Date.now()) {

@@ -50,6 +50,7 @@ function Login() {
                         responseData = null;
                     }
                     if (responseData && Object.keys(responseData).length > 0) {
+                        console.log(responseData);
                         if (responseData.error) {
                             setLoading(true);
                             setError(true);

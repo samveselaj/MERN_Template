@@ -89,6 +89,7 @@ import useLocalStorage from './hooks/useLocalStorage';
 import Cookies from 'js-cookie';
 import ProtectedAuthPages from './pages/ProtectedAuthPages';
 import Footer from './components/Footer';
+import ForgotPassword from './pages/ForgotPassword';
 
 export const MyContext = createContext();
 
@@ -205,6 +206,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             {/* <Route path="/settings" element={<Settings />} /> */}
             <Route path="/login" element={
               <ProtectedAuthPages>

@@ -22,16 +22,12 @@ async function sendOTPVerificationEmail({ username, email }, res) {
         });
 
         await newUserOTPVerification.save();
-        sendEmail(email, mailOptions.subject, mailOptions.html);
-
-        return res.json({
-            status: "PENDING",
-            message: "OTP sent to email",
-            data: {
-                username: username,
-                email: email
-            }
-        }).status(200);
+        emailObj = {
+            clientEmail: email,
+            subject: mailOptions.subject,
+            html: mailOptions.html
+        }
+        sendEmail(emailObj, res);
 
     } catch (err) {
         console.error(err);

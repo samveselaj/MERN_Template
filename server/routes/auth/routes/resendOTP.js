@@ -1,8 +1,8 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const UserModel = require("../../models/UserModel");
-const { sendOTPVerificationEmail } = require("../../services/sendOTPVerificationEmail");
-const UserOTPVerificationModel = require("../../models/UserOTPVerificationModel");
+const UserModel = require("../../../models/UserModel");
+const { sendOTPVerificationEmail } = require("../../../services/sendOTPVerificationEmail");
+const UserOTPVerificationModel = require("../../../models/UserOTPVerificationModel");
 
 const router = express.Router();
 

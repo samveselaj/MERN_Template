@@ -87,7 +87,8 @@ function Navbar() {
     }
   }, [])
 
-  const logout = async () => {
+  const logout = async (e) => {
+    e.preventDefault();
     try {
       setLoading(true);
       window.open(`${process.env.REACT_APP_API_URL}/auth/google/logout`, "_self");
@@ -101,7 +102,7 @@ function Navbar() {
         responseData = null;
       }
       if (responseData && responseData.login && responseData.login === "false") {
-        alert(responseData);
+        alert("login: " + responseData.login);
         setLoading(false);
         navigate("/login");
         Cookies.remove("accessToken");
@@ -115,6 +116,8 @@ function Navbar() {
     } catch (err) {
       setLoading(false);
       alert("Logout failed");
+    } finally {
+      setLoading(false);
     }
   }
 

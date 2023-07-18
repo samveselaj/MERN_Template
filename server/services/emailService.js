@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-async function sendEmail(clientEmail, subject, html) {
+async function sendEmail({ clientEmail, subject, html }, res) {
     try {
         const testAccount = await nodemailer.createTestAccount();
 
@@ -21,10 +21,23 @@ async function sendEmail(clientEmail, subject, html) {
             html: html,
         };
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent:', info.response);
-        console.log('Preview URL:', nodemailer.getTestMessageUrl(info));
+        if (info.rejected.length > 0) {
+            return res.json({
+                status: 'error',
+                message: 'Email not sent',
+            }).status(400);
+        } else {
+            return res.json({
+                status: 'success',
+                message: 'Email sent',
+                previewEmailURL: nodemailer.getTestMessageUrl(info),
+            }).status(200);
+        }
     } catch (err) {
-        console.error('Error sending email:', err);
+        return res.json({
+            status: 'error',
+            message: err.message,
+        }).status(400);
     }
 };
 

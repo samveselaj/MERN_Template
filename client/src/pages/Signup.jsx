@@ -151,7 +151,6 @@ function Signup() {
                 responseData = null;
             }
             if (responseData && Object.keys(responseData).length > 0) {
-                console.log(responseData);
                 if (responseData.error) {
                     setLoading(false);
                     setError(true);
@@ -224,7 +223,7 @@ function Signup() {
                         <div className="auth-form-container">
                             <h1 className="auth-form-title">Verify OTP</h1>
                             {error && responseMessage ? <p className="response-message">{responseMessage}</p> : null}
-                            <p className="otp-info-message">A <b>six digit</b> random number has been sent to your email address. Please enter that number below:</p>
+                            <p className="otp-info-message">A <b>6 digit code number</b> has been sent to your email address. Please enter your code number below:</p>
                             <form onSubmit={submitOtpForm}>
                                 <div className="otp-container">
                                     {otp.map((digit, index) => (

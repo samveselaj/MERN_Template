@@ -2,8 +2,8 @@ require("dotenv").config();
 const router = require("express").Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const { replaceSpecialChars } = require("../../utils/replaceSpecialChars");
-const GoogleUserModel = require("../../models/GoogleUserModel");
+const { replaceSpecialChars } = require("../../../utils/replaceSpecialChars");
+const GoogleUserModel = require("../../../models/GoogleUserModel");
 
 const googleRefreshTokens = [];
 
@@ -70,10 +70,5 @@ router.get("/google/callback",
         failureRedirect: "/login/failed",
     })
 );
-
-router.get("/google/logout", (req, res) => {
-    req.logout();
-    res.redirect(process.env.ORIGIN_DOMAIN);
-});
 
 module.exports = router;

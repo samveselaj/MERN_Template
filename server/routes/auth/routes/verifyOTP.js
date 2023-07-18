@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 
-const UserOTPVerificationModel = require("../../models/UserOTPVerificationModel");
-const UserModel = require("../../models/UserModel");
-const { sendOTPVerificationEmail } = require("../../services/sendOTPVerificationEmail");
+const UserOTPVerificationModel = require("../../../models/UserOTPVerificationModel");
+const UserModel = require("../../../models/UserModel");
+const { sendOTPVerificationEmail } = require("../../../services/sendOTPVerificationEmail");
 
 router.post('/verifyOTP', async (req, res) => {
     try {
