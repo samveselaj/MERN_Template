@@ -126,7 +126,6 @@ function App() {
         window.sessionStorage.clear();
         return;
       } else {
-        console.log(responseData);
         window.sessionStorage.setItem("user", JSON.stringify(responseData.user));
         setLoggedIn(true);
       }
@@ -159,6 +158,7 @@ function App() {
       if (googleResponseData) {
         setLoggedIn(true);
         console.log(googleResponseData);
+        window.sessionStorage.setItem("user", JSON.stringify(googleResponseData.user));
       }
     }
     fetchGoogleUser();
@@ -174,7 +174,8 @@ function App() {
   }
   if (userFromSessionStorage) {
     const userJson = JSON.parse(userFromSessionStorage);
-    contextValues.user = userJson.id
+    if (userJson && userJson.id) contextValues.user = userJson.id;
+    else contextValues.user = userJson;
   }
 
   return (

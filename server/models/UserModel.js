@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         default: false,
         required: true
     },
+    googleId: {
+        type: String,
+        required: false
+    },
     date: {
         type: Date,
         default: Date.now()
@@ -26,6 +30,7 @@ const userSchema = new mongoose.Schema({
 
 function fillUnfilled(next) {
     if (!this.verified) this.verified = false;
+    if (!this.googleId) this.googleId = false;
     next();
 }
 

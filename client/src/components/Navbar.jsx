@@ -87,14 +87,15 @@ function Navbar() {
     }
   }, [])
 
-  const logout = async (e) => {
+  const logoutFunction = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      setLoading(true);
       window.open(`${process.env.REACT_APP_API_URL}/auth/google/logout`, "_self");
       const url = `${process.env.REACT_APP_API_URL}/auth/logout`;
       const response = await fetch(url);
       const responseText = await response.text();
+      console.log(responseText);
       let responseData;
       try {
         responseData = JSON.parse(responseText);
@@ -103,18 +104,15 @@ function Navbar() {
       }
       if (responseData && responseData.login && responseData.login === "false") {
         alert("login: " + responseData.login);
-        setLoading(false);
         navigate("/login");
         Cookies.remove("accessToken");
         Cookies.remove("refreshToken");
         window.sessionStorage.clear();
         window.location.reload();
       } else {
-        setLoading(false);
         alert("Logout failed");
       }
     } catch (err) {
-      setLoading(false);
       alert("Logout failed");
     } finally {
       setLoading(false);
@@ -150,7 +148,7 @@ function Navbar() {
             <Link to="/Signup" className="navbar-link">Signup</Link>
           </>
         ) : (
-          <button onClick={logout} className="navbar-link">Logout</button>
+          <button onClick={logoutFunction} className="navbar-link">Logout</button>
         )}
       </div>
 
@@ -180,7 +178,7 @@ function Navbar() {
                 </Link>
               </>
             ) : (
-              <button onClick={logout} className="navbar-dropdown-item">
+              <button onClick={logoutFunction} className="navbar-dropdown-item">
                 <p>Logout</p>
                 <FontAwesomeIcon icon={faPowerOff} />
               </button>

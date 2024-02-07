@@ -131,7 +131,7 @@ function Signup() {
 
     const submitOtpForm = async (e) => {
         e.preventDefault();
-        const url = `${process.env.REACT_APP_API_URL}/auth/verifyOTP`;
+        const url = `${process.env.REACT_APP_API_URL}/auth/sendOTP`;
         const fd = new URLSearchParams();
         fd.append("otp", otp.join(""));
         fd.append("username", username);
